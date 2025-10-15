@@ -2,3 +2,7 @@
 backend/venv/
 backend/__pycache__/
 backend/.env
+backend/data/
+backend/*.db
+backend/**/*.pyc
+backend/**/__pycache__/
