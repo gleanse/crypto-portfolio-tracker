@@ -1,1 +1,21 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+:root {
+  --primary: #829191;
+  --secondary: #004f2d;
+  --accent: #091e05;
+  --background: #ffffff;
+  --foreground: #000000;
+  --input-bg: #f8f9fa;
+  --input-border: #829191;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-inputbg: var(--input-bg);
+  --color-inputbrdr: var(--input-border);
+}
