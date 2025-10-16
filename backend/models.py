@@ -4,6 +4,7 @@ from database import Base
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from datetime import datetime
 
+
 class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ =  "users"
 
@@ -16,8 +17,9 @@ class Holding(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id")) 
-    coin: Mapped[str] = mapped_column(String(50), unique=True)
+    coin: Mapped[str] = mapped_column(String(50))
     coin_symbol: Mapped[str] = mapped_column(String(10))
+    icon_url: Mapped[str] = mapped_column(String(255), nullable=True)
     quantity: Mapped[float] = mapped_column(Float)
     buy_price: Mapped[float] = mapped_column(Float)
     currency: Mapped[str] = mapped_column(String(10), default="php")

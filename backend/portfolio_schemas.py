@@ -14,6 +14,7 @@ class HoldingResponse(BaseModel):
     id: int
     coin: str
     coin_symbol: str
+    icon_url: Optional[str] = None
     quantity: float
     buy_price: float
     currency: str

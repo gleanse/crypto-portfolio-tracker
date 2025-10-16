@@ -128,3 +128,86 @@ class CoinGeckoService:
                     prices[coin_id] = {currency: None}
         
         return prices
+
+    @staticmethod
+    async def get_coin_icon_url(coin_id: str):
+        print(f"DEBUG: Fetching icon for coin_id: '{coin_id}'")
+        
+        cache_key = f"crypto_portfolio:icon:{coin_id}"
+        cached_icon = redis_client.get(cache_key)
+        
+        if cached_icon:
+            print(f"Using REDIS cached icon for {coin_id}: {cached_icon}")
+            return cached_icon
+        
+        try:
+            await throttler.wait_if_needed()
+            
+            url = f"https://api.coingecko.com/api/v3/coins/{coin_id}"
+            print(f"DEBUG: Making request to: {url}")
+            
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, timeout=10.0)
+                
+                print(f"DEBUG: Response status: {response.status_code}")
+                
+                if response.status_code == 429:
+                    print("CoinGecko rate limit exceeded for icon")
+                    return None
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    print(f"DEBUG: Found image data: {data.get('image', {})}")
+
+                    image_data = data.get('image', {})
+                    icon_url = image_data.get('large')
+                    
+                    if icon_url:
+                        print(f"Found icon URL: {icon_url}")
+                        redis_client.setex(
+                            cache_key,
+                            CoinGeckoService.CACHE_DURATION * 2,
+                            icon_url
+                        )
+                        print(f"Cached icon for {coin_id}: {icon_url}")
+                        return icon_url
+                    else:
+                        print(f"No icon URL found in response")
+                        return None
+                else:
+                    print(f"CoinGecko API error for icon: {response.status_code}")
+                    print(f"Response text: {response.text}")
+                    return None
+                    
+        except Exception as e:
+            print(f"CoinGecko icon fetch failed: {e}")
+            return None
+
+    @staticmethod
+    async def get_multiple_icons(coin_ids: list):
+        icons = {}
+        
+        # try to get all from redis first
+        for coin_id in coin_ids:
+            cache_key = f"crypto_portfolio:icon:{coin_id}"
+            cached_icon = redis_client.get(cache_key)
+            if cached_icon:
+                icons[coin_id] = cached_icon
+        
+        # fetch missing icons from coingecko
+        missing_coins = [c for c in coin_ids if c not in icons]
+        if missing_coins:
+            try:
+                await throttler.wait_if_needed()
+                
+                for coin_id in missing_coins:
+                    icon_url = await CoinGeckoService.get_coin_icon_url(coin_id)
+                    icons[coin_id] = icon_url
+                    
+            except Exception as e:
+                print(f"Batch icon fetch failed: {e}")
+                for coin_id in missing_coins:
+                    if coin_id not in icons:
+                        icons[coin_id] = None
+        
+        return icons

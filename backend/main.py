@@ -66,11 +66,12 @@ async def add_holding(
             status_code=503,
             detail="CoinGecko API is currently unavailable. Please try again later."
         )
-
+    icon_url = await CoinGeckoService.get_coin_icon_url(holding_data.coin)
     holding = Holding(
         user_id=user.id,
         coin=holding_data.coin,
         coin_symbol=holding_data.coin_symbol,
+        icon_url=icon_url,
         quantity=holding_data.quantity,
         buy_price=holding_data.buy_price,
         currency=holding_data.currency,
@@ -91,6 +92,7 @@ async def add_holding(
         id=holding.id,
         coin=holding.coin,
         coin_symbol=holding.coin_symbol,
+        icon_url=holding.icon_url,
         quantity=holding.quantity,
         buy_price=holding.buy_price,
         currency=holding.currency,
@@ -145,6 +147,7 @@ async def get_my_portfolio(
             id=holding.id,
             coin=holding.coin,
             coin_symbol=holding.coin_symbol,
+            icon_url=holding.icon_url,
             quantity=holding.quantity,
             buy_price=holding.buy_price,
             currency=holding.currency,
