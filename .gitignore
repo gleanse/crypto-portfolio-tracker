@@ -6,3 +6,17 @@ backend/data/
 backend/*.db
 backend/**/*.pyc
 backend/**/__pycache__/
+
+# FRONTEND
+frontend/node_modules
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.next/
+frontend/.turbo/
+frontend/.eslintcache
+frontend/.parcel-cache/
+frontend/yarn.lock
+frontend/package-lock.json
+frontend/.env
+frontend/.env.*
