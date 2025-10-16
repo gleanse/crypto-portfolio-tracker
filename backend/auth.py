@@ -4,16 +4,15 @@ from fastapi_users import BaseUserManager, IntegerIDMixin, FastAPIUsers
 from fastapi_users.authentication import AuthenticationBackend, BearerTransport, JWTStrategy
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.orm import Session
-
 from models import User
 from database import get_db
+from decouple import config
 
-# TODO: !!
-SECRET = "CHANGE_THIS_SECRET_KEY_IN_PRODUCTION"
+JWT_SIGNING_KEY = config("JWT_SIGNING_KEY")
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
-    reset_password_token_secret = SECRET
-    verification_token_secret = SECRET
+    reset_password_token_secret = JWT_SIGNING_KEY
+    verification_token_secret = JWT_SIGNING_KEY
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User registered: {user.email}")
@@ -27,7 +26,7 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
 bearer_transport = BearerTransport(tokenUrl="auth/login")
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+    return JWTStrategy(secret=JWT_SIGNING_KEY, lifetime_seconds=3600)
 
 auth_backend = AuthenticationBackend(
     name="jwt",
