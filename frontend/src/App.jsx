@@ -1,4 +1,3 @@
-// src/App.jsx
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // TODO: remove this later and repalce the idk porfolio or whatever homepage of the app
@@ -48,6 +48,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />{' '}
         <Route
           path="/dashboard"
           element={

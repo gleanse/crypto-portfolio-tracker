@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { FiMail, FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import Button from '../ui/Button';
 
-// this part is medyo confusing kasi the fast api works weird in OAuth2 like backend expect the key as username but the value is email so yeah
-const LoginForm = ({ onLogin, loading }) => {
+// NOTE: backend expects (email, password, username)in JSON
+// unlike login which uses oauth2 weirdness
+const RegisterForm = ({ onRegister, loading }) => {
   const [formData, setFormData] = useState({
+    email: '',
     username: '',
     password: '',
+    confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,11 +24,20 @@ const LoginForm = ({ onLogin, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(formData.username, formData.password);
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+
+    onRegister(formData.email, formData.password, formData.username);
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -37,18 +50,17 @@ const LoginForm = ({ onLogin, loading }) => {
           </div>
           <div className="space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-              Welcome back
+              Create your account
             </h2>
-            <p className="text-sm text-gray-600">
-              Sign in to your crypto portfolio
-            </p>
+            <p className="text-sm text-gray-600">Join your crypto portfolio</p>
           </div>
         </div>
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="space-y-2">
               <label
-                htmlFor="username"
+                htmlFor="email"
                 className="text-sm font-medium text-foreground"
               >
                 Email address
@@ -58,18 +70,43 @@ const LoginForm = ({ onLogin, loading }) => {
                   <FiMail className="h-5 w-5 text-inputbrdr" />
                 </div>
                 <input
-                  id="username"
-                  name="username"
+                  id="email"
+                  name="email"
                   type="email"
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
                   placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+              {/* NOTE: this is ACTUAL email field, not like login's username weirdness */}
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="username"
+                className="text-sm font-medium text-foreground"
+              >
+                Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FiUser className="h-5 w-5 text-inputbrdr" />
+                </div>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  required
+                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  placeholder="Enter a username"
                   value={formData.username}
                   onChange={handleChange}
                 />
               </div>
-              {/* NOTE:  EMAIL ADDRESS KASI LITERAL VALUE EMAIL EXPECT NG BACKEND but it wanted to be insert in username key in json */}
             </div>
+
             <div className="space-y-2">
               <label
                 htmlFor="password"
@@ -87,7 +124,7 @@ const LoginForm = ({ onLogin, loading }) => {
                   type={showPassword ? 'text' : 'password'}
                   required
                   className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
-                  placeholder="Enter your password"
+                  placeholder="Create a password"
                   value={formData.password}
                   onChange={handleChange}
                 />
@@ -97,9 +134,44 @@ const LoginForm = ({ onLogin, loading }) => {
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
-                    <FiEye className="h-5 w-5" />
-                  ) : (
                     <FiEyeOff className="h-5 w-5" />
+                  ) : (
+                    <FiEye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="confirmPassword"
+                className="text-sm font-medium text-foreground"
+              >
+                Confirm Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FiLock className="h-5 w-5 text-inputbrdr" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  required
+                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-accent transition-colors"
+                  onClick={toggleConfirmPasswordVisibility}
+                >
+                  {showConfirmPassword ? (
+                    <FiEyeOff className="h-5 w-5" />
+                  ) : (
+                    <FiEye className="h-5 w-5" />
                   )}
                 </button>
               </div>
@@ -113,19 +185,19 @@ const LoginForm = ({ onLogin, loading }) => {
               loading={loading}
               className="w-full flex justify-center py-3 text-base font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
             >
-              Sign in
+              Create Account
             </Button>
           </div>
         </form>
 
         <div className="text-center">
           <p className="text-foreground">
-            Don't have an account?{' '}
+            Already have an account?{' '}
             <Link
-              to="/register"
+              to="/login"
               className="text-accent hover:underline font-medium"
             >
-              Sign up
+              Sign in
             </Link>
           </p>
         </div>
@@ -134,4 +206,4 @@ const LoginForm = ({ onLogin, loading }) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

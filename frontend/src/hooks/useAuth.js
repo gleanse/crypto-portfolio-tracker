@@ -8,7 +8,6 @@ export const useAuth = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      // TODO: might need to validate token with backend here or no? not sure for now but i USE jwt which as far as i know it use signatures
       setUser({ token });
     }
     setLoading(false);
@@ -33,6 +32,25 @@ export const useAuth = () => {
     }
   };
 
+  const register = async (email, password, username) => {
+    try {
+      setLoading(true);
+      const response = await authApi.register({
+        email,
+        password,
+        username,
+      });
+      return { success: true, data: response };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Registration failed',
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     authApi.logout();
     setUser(null);
@@ -42,6 +60,7 @@ export const useAuth = () => {
     user,
     loading,
     login,
+    register,
     logout,
     isAuthenticated: !!user,
   };
