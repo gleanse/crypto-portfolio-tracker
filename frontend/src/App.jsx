@@ -7,28 +7,8 @@ import {
 import { useAuth } from './hooks/useAuth';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Dashboard from './pages/DashboardPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-
-// TODO: remove this later and repalce the idk porfolio or whatever homepage of the app
-// simple dashboard component for testing auth
-const Dashboard = () => {
-  const { user, logout } = useAuth();
-
-  return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-foreground mb-4">Welcome!</h1>
-        <p className="text-foreground mb-6">You're successfully logged in!</p>
-        <button
-          onClick={logout}
-          className="px-6 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
-        >
-          Logout
-        </button>
-      </div>
-    </div>
-  );
-};
 
 function App() {
   const { loading } = useAuth();
@@ -48,7 +28,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />{' '}
+        <Route path="/register" element={<Register />} />
         <Route
           path="/dashboard"
           element={
