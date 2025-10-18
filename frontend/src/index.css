@@ -2,28 +2,33 @@
 
 :root {
   /* Primary Colors */
-  --primary: #004f2d;
-  --secondary: #00ff87;
-  --accent: #091e05;
+  --primary: #0ea06f;
+  --secondary: #34d399;
+  --accent: #065f46;
 
-  /* Backgrounds */
-  --background: #ffffff;
-  --background-dark: #091e05;
-  --card-bg: #e8f5e9;
+  /* Backgrounds*/
+  --background: #0a0f0a;
+  --background-dark: #051105;
+  --card-bg: #0f1a0f;
 
   /* Text Colors */
-  --foreground: #1a1a1a;
-  --text-muted: #4a5568;
+  --foreground: #f8fafc;
+  --text-muted: #94a3b8;
 
   /* Status Colors */
-  --positive: #00ff87;
-  --negative: #ff6b6b;
-  --warning: #ffd700;
+  --positive: #10b981;
+  --negative: #ef4444;
+  --warning: #f59e0b;
 
   /* Input Elements */
-  --input-bg: #f8f9fa;
-  --input-border: #004f2d;
-  --input-focus: #00ff87;
+  --input-bg: #0f1a0f;
+  --input-border: #1e293b;
+  --input-focus: #10b981;
+
+  /* Neutral Colors for Modals & Contrast */
+  --surface: #1a1f1a;
+  --surface-light: #2a2f2a;
+  --surface-border: #374151;
 }
 
 @theme inline {
@@ -50,4 +55,9 @@
   --color-inputbg: var(--input-bg);
   --color-inputbrdr: var(--input-border);
   --color-inputfocus: var(--input-focus);
+
+  /* Surface Colors */
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --color-surface-border: var(--surface-border);
 }
