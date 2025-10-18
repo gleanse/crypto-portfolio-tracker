@@ -39,7 +39,7 @@ const LoginForm = ({ onLogin, loading }) => {
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
               Welcome back
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted">
               Sign in to your crypto portfolio
             </p>
           </div>
@@ -62,7 +62,7 @@ const LoginForm = ({ onLogin, loading }) => {
                   name="username"
                   type="email"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
                   placeholder="Enter your email"
                   value={formData.username}
                   onChange={handleChange}
@@ -86,14 +86,14 @@ const LoginForm = ({ onLogin, loading }) => {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-accent transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-inputfocus transition-colors"
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (

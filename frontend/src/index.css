@@ -1,21 +1,53 @@
 @import 'tailwindcss';
 
 :root {
-  --primary: #829191;
-  --secondary: #004f2d;
+  /* Primary Colors */
+  --primary: #004f2d;
+  --secondary: #00ff87;
   --accent: #091e05;
+
+  /* Backgrounds */
   --background: #ffffff;
-  --foreground: #000000;
+  --background-dark: #091e05;
+  --card-bg: #e8f5e9;
+
+  /* Text Colors */
+  --foreground: #1a1a1a;
+  --text-muted: #4a5568;
+
+  /* Status Colors */
+  --positive: #00ff87;
+  --negative: #ff6b6b;
+  --warning: #ffd700;
+
+  /* Input Elements */
   --input-bg: #f8f9fa;
-  --input-border: #829191;
+  --input-border: #004f2d;
+  --input-focus: #00ff87;
 }
 
 @theme inline {
+  /* Primary Colors */
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+
+  /* Backgrounds */
   --color-background: var(--background);
+  --color-background-dark: var(--background-dark);
+  --color-card: var(--card-bg);
+
+  /* Text */
   --color-foreground: var(--foreground);
+  --color-muted: var(--text-muted);
+
+  /* Status */
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-warning: var(--warning);
+
+  /* Inputs */
   --color-inputbg: var(--input-bg);
   --color-inputbrdr: var(--input-border);
+  --color-inputfocus: var(--input-focus);
 }

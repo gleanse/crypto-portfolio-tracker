@@ -52,7 +52,7 @@ const RegisterForm = ({ onRegister, loading }) => {
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
               Create your account
             </h2>
-            <p className="text-sm text-gray-600">Join your crypto portfolio</p>
+            <p className="text-sm text-muted">Join your crypto portfolio</p>
           </div>
         </div>
 
@@ -74,7 +74,7 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="email"
                   type="email"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
@@ -99,7 +99,7 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="username"
                   type="text"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
                   placeholder="Enter a username"
                   value={formData.username}
                   onChange={handleChange}
@@ -123,14 +123,14 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
                   placeholder="Create a password"
                   value={formData.password}
                   onChange={handleChange}
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-accent transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-inputfocus transition-colors"
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
@@ -158,14 +158,14 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
-                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-gray-400 text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent bg-inputbg transition-colors"
+                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-accent transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-inputfocus transition-colors"
                   onClick={toggleConfirmPasswordVisibility}
                 >
                   {showConfirmPassword ? (
