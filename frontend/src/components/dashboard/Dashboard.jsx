@@ -14,6 +14,7 @@ import Button from '../ui/Button';
 import Modal from '../ui/Modal';
 import AddHoldingModal from './AddHoldingModal';
 import { usePolling } from '../../hooks/usePolling';
+import CoinDetailModal from './CoinDetailModal';
 
 const Dashboard = () => {
   const {
@@ -35,6 +36,7 @@ const Dashboard = () => {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedHolding, setSelectedHolding] = useState(null);
 
   useEffect(() => {
     fetchPortfolioData();
@@ -90,6 +92,10 @@ const Dashboard = () => {
       holdingName: '',
       isLoading: false,
     });
+  };
+
+  const handleCoinClick = (holding) => {
+    setSelectedHolding(holding);
   };
 
   const formatCurrency = (amount) => {
@@ -289,7 +295,7 @@ const Dashboard = () => {
                         Total Worth
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">
-                        ₱ Profit/Loss
+                        Profit/Loss
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">
                         Actions
@@ -298,7 +304,11 @@ const Dashboard = () => {
                   </thead>
                   <tbody className="divide-y divide-inputbrdr">
                     {holdings.map((holding) => (
-                      <tr key={holding.id} className="hover:bg-inputbg">
+                      <tr
+                        key={holding.id}
+                        className="hover:bg-inputbg cursor-pointer transition-colors"
+                        onClick={() => handleCoinClick(holding)}
+                      >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-3">
                             {holding.icon_url && (
@@ -347,9 +357,10 @@ const Dashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button
-                            onClick={() =>
-                              handleDeleteClick(holding.id, holding.coin)
-                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteClick(holding.id, holding.coin);
+                            }}
                             className="text-negative hover:text-negative/80 transition-colors p-2 rounded-lg hover:bg-negative/10"
                             title="Delete holding"
                           >
@@ -401,6 +412,12 @@ const Dashboard = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
         isLoading={deleteModal.isLoading}
+      />
+
+      {/* COIN DETAIL MODAL */}
+      <CoinDetailModal
+        holding={selectedHolding}
+        onClose={() => setSelectedHolding(null)}
       />
     </div>
   );

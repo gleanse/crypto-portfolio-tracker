@@ -1,13 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  FiX,
-  FiPlus,
-  FiSearch,
-  FiChevronDown,
-  FiDivide,
-  FiCreditCard,
-} from 'react-icons/fi';
-import { HiInformationCircle } from 'react-icons/hi2';
+import { FiX, FiPlus, FiSearch, FiChevronDown } from 'react-icons/fi';
+import { TbCoins } from 'react-icons/tb';
+import { FaCoins } from 'react-icons/fa6';
+import { FaMoneyBills } from 'react-icons/fa6';
 import { CRYPTO_COINS } from '../../data/cryptoCoins';
 
 const AddHoldingModal = ({
@@ -233,7 +228,7 @@ const AddHoldingModal = ({
         <div className="flex items-center justify-between p-4 sm:p-6 bg-gradient-to-r from-primary to-primary/80 rounded-t-2xl sticky top-0">
           <div className="flex items-center gap-3">
             <div className="flex-shrink-0 text-white">
-              <HiInformationCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+              <TbCoins className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-semibold text-white">
               Add New Holding
@@ -336,7 +331,7 @@ const AddHoldingModal = ({
                     : 'text-foreground hover:bg-surface-border'
                 }`}
               >
-                <FiCreditCard className="w-4 h-4" />
+                <FaCoins className="w-4 h-4" />
                 <span className="text-sm font-medium">
                   I know price per coin
                 </span>
@@ -350,7 +345,7 @@ const AddHoldingModal = ({
                     : 'text-foreground hover:bg-surface-border'
                 }`}
               >
-                <FiDivide className="w-4 h-4" />
+                <FaMoneyBills className="w-4 h-4" />
                 <span className="text-sm font-medium">I know total spent</span>
               </button>
             </div>
