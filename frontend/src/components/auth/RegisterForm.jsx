@@ -67,7 +67,7 @@ const RegisterForm = ({ onRegister, loading }) => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="h-5 w-5 text-inputbrdr" />
+                  <FiMail className="h-5 w-5 text-muted" />
                 </div>
                 <input
                   id="email"
@@ -92,7 +92,7 @@ const RegisterForm = ({ onRegister, loading }) => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiUser className="h-5 w-5 text-inputbrdr" />
+                  <FiUser className="h-5 w-5 text-muted" />
                 </div>
                 <input
                   id="username"
@@ -116,7 +116,7 @@ const RegisterForm = ({ onRegister, loading }) => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-inputbrdr" />
+                  <FiLock className="h-5 w-5 text-muted" />
                 </div>
                 <input
                   id="password"
@@ -130,7 +130,7 @@ const RegisterForm = ({ onRegister, loading }) => {
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-inputfocus transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted hover:text-inputfocus transition-colors"
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
@@ -151,7 +151,7 @@ const RegisterForm = ({ onRegister, loading }) => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-inputbrdr" />
+                  <FiLock className="h-5 w-5 text-muted" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -165,7 +165,7 @@ const RegisterForm = ({ onRegister, loading }) => {
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-inputbrdr hover:text-inputfocus transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted hover:text-inputfocus transition-colors"
                   onClick={toggleConfirmPasswordVisibility}
                 >
                   {showConfirmPassword ? (

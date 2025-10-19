@@ -13,6 +13,7 @@ import {
 import Button from '../ui/Button';
 import Modal from '../ui/Modal';
 import AddHoldingModal from './AddHoldingModal';
+import { usePolling } from '../../hooks/usePolling';
 
 const Dashboard = () => {
   const {
@@ -38,6 +39,11 @@ const Dashboard = () => {
   useEffect(() => {
     fetchPortfolioData();
   }, []);
+
+  usePolling(() => {
+    console.log('POLLING: Auto-refreshing portfolio data...');
+    fetchPortfolioData();
+  }, 76000);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

@@ -500,7 +500,7 @@ const AddHoldingModal = ({
           <button
             onClick={handleClose}
             disabled={isLoading}
-            className="flex-1 px-4 py-3 text-foreground bg-surface-light border border-surface-border rounded-lg hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer font-medium text-base"
+            className="flex-1 px-4 py-3 text-foreground bg-surface-light border border-surface-border rounded-lg hover:bg-negative hover:text-white  transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer font-medium text-base"
           >
             Cancel
           </button>
