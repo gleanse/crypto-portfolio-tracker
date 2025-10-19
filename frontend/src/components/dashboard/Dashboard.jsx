@@ -45,7 +45,7 @@ const Dashboard = () => {
   usePolling(() => {
     console.log('POLLING: Auto-refreshing portfolio data...');
     fetchPortfolioData();
-  }, 76000);
+  }, 40000);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

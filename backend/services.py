@@ -36,7 +36,7 @@ throttler = RequestThrottler(requests_per_minute=25)
 
 class CoinGeckoService:
     # NOTE: adjust if necessary based on realtime fast changing value of the coins but for me i think its pretty decent and generous and make performance better 
-    CACHE_DURATION = 75  # 1 mins and 15 secs
+    CACHE_DURATION = 30  # 30 seconds
     
     @staticmethod
     async def get_current_price(coin_id: str, currency: str = "php"):
