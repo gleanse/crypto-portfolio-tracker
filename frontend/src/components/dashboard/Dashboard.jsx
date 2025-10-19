@@ -105,15 +105,74 @@ const Dashboard = () => {
     })}`;
   };
 
-  if (loading && !portfolioStats) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <FiRefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
-          <p className="text-foreground">Loading your portfolio...</p>
+  // SKELETON LOADING COMPONENT
+  const DashboardSkeleton = () => (
+    <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* skeleton header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="space-y-2">
+            <div className="w-48 h-8 bg-surface-light rounded animate-pulse"></div>
+            <div className="w-64 h-4 bg-surface-light rounded animate-pulse"></div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-24 h-10 bg-surface-light rounded-lg animate-pulse"></div>
+            <div className="w-32 h-10 bg-surface-light rounded-lg animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* skeleton stats cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, index) => (
+            <div
+              key={index}
+              className="bg-card rounded-xl p-6 border border-inputbrdr"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-surface-light rounded-lg animate-pulse"></div>
+                <div className="space-y-2 flex-1">
+                  <div className="w-16 h-4 bg-surface-light rounded animate-pulse"></div>
+                  <div className="w-24 h-6 bg-surface-light rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* skeleton table */}
+        <div className="bg-card rounded-xl border border-inputbrdr overflow-hidden">
+          <div className="px-6 py-4 bg-surface-light">
+            <div className="w-32 h-6 bg-surface rounded animate-pulse"></div>
+          </div>
+          <div className="p-6 space-y-4">
+            {/* table header */}
+            <div className="grid grid-cols-7 gap-4 pb-4 border-b border-inputbrdr">
+              {[...Array(7)].map((_, index) => (
+                <div
+                  key={index}
+                  className="h-4 bg-surface-light rounded animate-pulse"
+                ></div>
+              ))}
+            </div>
+            {/* table rows */}
+            {[...Array(5)].map((_, rowIndex) => (
+              <div key={rowIndex} className="grid grid-cols-7 gap-4 py-4">
+                {[...Array(7)].map((_, colIndex) => (
+                  <div
+                    key={colIndex}
+                    className="h-4 bg-surface-light rounded animate-pulse"
+                  ></div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    );
+    </div>
+  );
+
+  if (loading && !portfolioStats) {
+    return <DashboardSkeleton />;
   }
 
   if (error) {

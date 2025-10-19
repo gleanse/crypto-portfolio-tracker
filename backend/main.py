@@ -4,7 +4,7 @@ from sqlalchemy import select
 from contextlib import asynccontextmanager
 from database import engine, Base, DATABASE_PATH, get_db
 from auth import fastapi_users, auth_backend
-from schemas import UserCreate, UserRead
+from schemas import UserCreate, UserRead, UserUpdate  
 from models import User, Holding
 from portfolio_schemas import HoldingCreate, HoldingResponse, PortfolioStats
 from services import CoinGeckoService
@@ -12,6 +12,7 @@ from services import CoinGeckoService
 from test.test_endpoints import test_router
 from decouple import config
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -51,6 +52,28 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+class UserDashboardResponse(BaseModel):
+    id: int
+    email: str
+    username: str | None
+
+@app.get("/users/me/dashboard", response_model=UserDashboardResponse, tags=["users"])
+async def get_current_user_for_dashboard(
+    user: User = Depends(fastapi_users.current_user())
+    ):
+
+    return UserDashboardResponse(
+        id=user.id,
+        email=user.email,
+        username=user.username
+    )
 
 # only include test endpoints in development
 # testing security and perfomances purposes only
