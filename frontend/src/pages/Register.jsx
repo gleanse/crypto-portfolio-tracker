@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import RegisterForm from '../components/auth/RegisterForm';
 import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/useToast';
+import Toast from '../components/ui/Toast';
 
 const Register = () => {
   const { register, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
+  const { toast, success, error, hideToast } = useToast();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -16,11 +19,12 @@ const Register = () => {
   const handleRegister = async (email, password, username) => {
     const result = await register(email, password, username);
     if (result.success) {
-      // TODO: use toast later
-      alert('Registration successful! Please login.');
-      navigate('/login', { replace: true });
+      success('Registration successful! Please login.', 1500);
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 1500);
     } else {
-      alert(result.error);
+      error(result.error || 'Registration failed. Please try again.', 1500);
     }
   };
 
@@ -35,6 +39,13 @@ const Register = () => {
           </Link>
         </p>
       </div>
+
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </>
   );
 };

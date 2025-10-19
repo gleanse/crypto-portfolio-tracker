@@ -15,6 +15,8 @@ import Modal from '../ui/Modal';
 import AddHoldingModal from './AddHoldingModal';
 import { usePolling } from '../../hooks/usePolling';
 import CoinDetailModal from './CoinDetailModal';
+import { useToast } from '../../hooks/useToast';
+import Toast from '../ui/Toast';
 
 const Dashboard = () => {
   const {
@@ -37,6 +39,7 @@ const Dashboard = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedHolding, setSelectedHolding] = useState(null);
+  const { toast, success, error: toastError, warning, hideToast } = useToast();
 
   useEffect(() => {
     fetchPortfolioData();
@@ -51,10 +54,21 @@ const Dashboard = () => {
     setIsRefreshing(true);
     await fetchPortfolioData();
     setIsRefreshing(false);
+    success('Portfolio data refreshed!', 1500);
   };
 
   const handleAddHolding = async (holdingData) => {
-    return await addHolding(holdingData);
+    const result = await addHolding(holdingData);
+    if (result.success) {
+      success(`${holdingData.coin} added to your portfolio!`, 1500);
+      setShowAddModal(false);
+    } else {
+      toastError(
+        result.error || 'Failed to add holding. Please try again.',
+        1500
+      );
+    }
+    return result;
   };
 
   const handleDeleteClick = (holdingId, holdingName) => {
@@ -72,6 +86,7 @@ const Dashboard = () => {
     const result = await deleteHolding(deleteModal.holdingId);
 
     if (result.success) {
+      warning(`${deleteModal.holdingName} holding deleted successfully!`, 1500);
       setDeleteModal({
         isOpen: false,
         holdingId: null,
@@ -79,9 +94,11 @@ const Dashboard = () => {
         isLoading: false,
       });
     } else {
+      toastError(
+        result.error || 'Failed to delete holding. Please try again.',
+        1500
+      );
       setDeleteModal((prev) => ({ ...prev, isLoading: false }));
-      // TODO: make it toast notif
-      console.error('Delete failed:', result.error);
     }
   };
 
@@ -477,6 +494,14 @@ const Dashboard = () => {
       <CoinDetailModal
         holding={selectedHolding}
         onClose={() => setSelectedHolding(null)}
+      />
+
+      {/* TOAST NOTIFICATIONS */}
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
       />
     </div>
   );

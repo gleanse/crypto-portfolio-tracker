@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { FiMail, FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import Button from '../ui/Button';
 
-// NOTE: backend expects (email, password, username)in JSON
-// unlike login which uses oauth2 weirdness
 const RegisterForm = ({ onRegister, loading }) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -14,22 +12,59 @@ const RegisterForm = ({ onRegister, loading }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords don't match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
+    if (validateForm()) {
+      onRegister(formData.email, formData.password, formData.username);
     }
-
-    onRegister(formData.email, formData.password, formData.username);
   };
 
   const togglePasswordVisibility = () => {
@@ -74,13 +109,19 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="email"
                   type="email"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus bg-inputbg transition-colors ${
+                    errors.email
+                      ? 'border-negative'
+                      : 'border-inputbrdr focus:border-inputfocus'
+                  }`}
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
                 />
               </div>
-              {/* NOTE: this is ACTUAL email field, not like login's username weirdness */}
+              {errors.email && (
+                <p className="text-negative text-sm mt-1">{errors.email}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -99,12 +140,19 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="username"
                   type="text"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus bg-inputbg transition-colors ${
+                    errors.username
+                      ? 'border-negative'
+                      : 'border-inputbrdr focus:border-inputfocus'
+                  }`}
                   placeholder="Enter a username"
                   value={formData.username}
                   onChange={handleChange}
                 />
               </div>
+              {errors.username && (
+                <p className="text-negative text-sm mt-1">{errors.username}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -123,7 +171,11 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
+                  className={`block w-full pl-10 pr-10 py-3 border rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus bg-inputbg transition-colors ${
+                    errors.password
+                      ? 'border-negative'
+                      : 'border-inputbrdr focus:border-inputfocus'
+                  }`}
                   placeholder="Create a password"
                   value={formData.password}
                   onChange={handleChange}
@@ -134,12 +186,15 @@ const RegisterForm = ({ onRegister, loading }) => {
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
-                    <FiEyeOff className="h-5 w-5" />
-                  ) : (
                     <FiEye className="h-5 w-5" />
+                  ) : (
+                    <FiEyeOff className="h-5 w-5" />
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p className="text-negative text-sm mt-1">{errors.password}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -158,7 +213,11 @@ const RegisterForm = ({ onRegister, loading }) => {
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
-                  className="block w-full pl-10 pr-10 py-3 border border-inputbrdr rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus focus:border-inputfocus bg-inputbg transition-colors"
+                  className={`block w-full pl-10 pr-10 py-3 border rounded-lg placeholder-muted text-foreground focus:outline-none focus:ring-2 focus:ring-inputfocus bg-inputbg transition-colors ${
+                    errors.confirmPassword
+                      ? 'border-negative'
+                      : 'border-inputbrdr focus:border-inputfocus'
+                  }`}
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
@@ -169,12 +228,17 @@ const RegisterForm = ({ onRegister, loading }) => {
                   onClick={toggleConfirmPasswordVisibility}
                 >
                   {showConfirmPassword ? (
-                    <FiEyeOff className="h-5 w-5" />
-                  ) : (
                     <FiEye className="h-5 w-5" />
+                  ) : (
+                    <FiEyeOff className="h-5 w-5" />
                   )}
                 </button>
               </div>
+              {errors.confirmPassword && (
+                <p className="text-negative text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
           </div>
 
